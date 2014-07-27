@@ -19,10 +19,10 @@ float EXPAND_SPEED = 1.25; // How fast diameter increases
  */
 int MIN_RED = 51; // Minimum value for red channel (0 - 255)
 int MAX_RED = 153; // Maximum value for red channel (0 - 255)
-int MIN_GREEN = 102; // Minimum value for red channel (0 - 255)
-int MAX_GREEN = 204; // Maximum value for red channel (0 - 255)
-int MIN_BLUE = 153; // Minimum value for red channel (0 - 255)
-int MAX_BLUE = 255; // Maximum value for red channel (0 - 255)
+int MIN_GREEN = 102; // Minimum value for green channel (0 - 255)
+int MAX_GREEN = 204; // Maximum value for green channel (0 - 255)
+int MIN_BLUE = 153; // Minimum value for blue channel (0 - 255)
+int MAX_BLUE = 255; // Maximum value for blue channel (0 - 255)
 
 /*
  * Control how opaque the initial incarnation of the spot is,
@@ -67,7 +67,7 @@ public class Spot
   }
   
   // echo() -- makes a copy of the spot at its original location, 
-  // but reduces the alpha a bit.
+  // but reduces the alpha and volume a bit.
   public Spot echo()
   {
     Spot spot = new Spot( x, y, sound );

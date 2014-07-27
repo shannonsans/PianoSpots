@@ -24,14 +24,14 @@ void setup()
   smooth();
 
   soundBank = new ScaledSampleSoundBank( 
-  new Maxim( this ), 
-  "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
-  ScaleFactory.createBluesMinor(), // Scale for generating tones
-  -14, // Number of intervals below the root tone
-  12, // Number of intervals above the root tone
-  24, // Max number of tones (lower this if performance is a problem) 
-  1.0, // Amplification
-  15 // Sample file length
+    new Maxim( this ), 
+    "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
+    ScaleFactory.createBluesMinor(), // Scale for generating tones
+    -16, // Number of intervals below the root tone
+    16, // Number of intervals above the root tone
+    30, // Max number of tones (lower this if performance is a problem) 
+    1.0, // Amplification
+    15 // Sample file length
   );
 }
 
@@ -598,10 +598,10 @@ float EXPAND_SPEED = 1.25; // How fast diameter increases
  */
 int MIN_RED = 51; // Minimum value for red channel (0 - 255)
 int MAX_RED = 153; // Maximum value for red channel (0 - 255)
-int MIN_GREEN = 102; // Minimum value for red channel (0 - 255)
-int MAX_GREEN = 204; // Maximum value for red channel (0 - 255)
-int MIN_BLUE = 153; // Minimum value for red channel (0 - 255)
-int MAX_BLUE = 255; // Maximum value for red channel (0 - 255)
+int MIN_GREEN = 102; // Minimum value for green channel (0 - 255)
+int MAX_GREEN = 204; // Maximum value for green channel (0 - 255)
+int MIN_BLUE = 153; // Minimum value for blue channel (0 - 255)
+int MAX_BLUE = 255; // Maximum value for blue channel (0 - 255)
 
 /*
  * Control how opaque the initial incarnation of the spot is,
@@ -646,7 +646,7 @@ public class Spot
   }
   
   // echo() -- makes a copy of the spot at its original location, 
-  // but reduces the alpha a bit.
+  // but reduces the alpha and volume a bit.
   public Spot echo()
   {
     Spot spot = new Spot( x, y, sound );

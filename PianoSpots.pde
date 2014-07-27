@@ -24,14 +24,14 @@ void setup()
   smooth();
 
   soundBank = new ScaledSampleSoundBank( 
-  new Maxim( this ), 
-  "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
-  ScaleFactory.createBluesMinor(), // Scale for generating tones
-  -14, // Number of intervals below the root tone
-  12, // Number of intervals above the root tone
-  24, // Max number of tones (lower this if performance is a problem) 
-  1.0, // Amplification
-  15 // Sample file length
+    new Maxim( this ), 
+    "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
+    ScaleFactory.createBluesMinor(), // Scale for generating tones
+    -16, // Number of intervals below the root tone
+    16, // Number of intervals above the root tone
+    30, // Max number of tones (lower this if performance is a problem) 
+    1.0, // Amplification
+    15 // Sample file length
   );
 }
 
