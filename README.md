@@ -10,7 +10,7 @@ Because I'm not mathematically capable of generating the scales I wanted for thi
 
 Piano Spots also uses a fork of [Mick Grierson's Maxim](https://github.com/micknoise/Maxim) cross-platform JavaScript digital signal processing library. [My fork](https://github.com/shannonsans/Maxim/) fixes some issues rising from  changes in the webkitAudioContext code (see [Porting webkitAudioContext code to standards based AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Porting_webkitAudioContext_code_to_standards_based_AudioContext)).
 
-The base piano note sample is the [Manthey Piano C3 note from FreeSound.org](http://www.freesound.org/people/Meg/sounds/83122/).
+The base piano note sample is the [Manthey-C3.WAV by Meg from FreeSound.org](http://www.freesound.org/people/Meg/sounds/83122/).
 
 ## Motivation
 
