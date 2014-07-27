@@ -21,6 +21,8 @@
 	  font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
 	  font-size: 11px; font-weight: normal; text-decoration: none;
 		  line-height: 1.5em;
+	  margin: 0;
+	  padding: 0;
 	}
 	a img { 
 		border: 0px solid transparent;
@@ -36,20 +38,21 @@
 	canvas { 
 		display: block; 
 		outline: 0px; 
-		margin-bottom: 1.5em; 
+		margin: 0;
+		padding: 0;
 	}
 /* 
 	#content { 
 		margin: 50px auto 0px auto; padding: 25px 25px 15px 25px;
-		width: 1024px; min-width: 300px; overflow: auto;
+		width: 100px; min-width: 300px; overflow: auto;
 		border-left: 1px solid #444; border-top: 1px solid #444; 
 		border-right: 1px solid #333; border-bottom: 1px solid #333;
 		background-color: #3d3d3d;
 	}
  */
- 
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.11.1/jquery.min.js"></script>
  <script type="text/javascript">
- 
+
  function hideAddressBar()
 {
   if(!window.location.hash)
@@ -62,7 +65,7 @@
       setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
   }
 }
- 
+
 window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
 window.addEventListener("orientationchange", hideAddressBar );
  
@@ -82,8 +85,7 @@ function getProcessingSketchId () { return 'PianoSpots'; }
 	<body>
 		<div id="content">
 			<div>
-				<canvas id="PianoSpots" data-processing-sources="PianoSpots.pde" 
-						width="1024" height="768">
+				<canvas id="PianoSpots" data-processing-sources="PianoSpots.pde">
 					<p>Your browser does not support the canvas tag.</p>
 					<!-- Note: you can put any alternative content here. -->
 				</canvas>

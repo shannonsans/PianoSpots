@@ -21,6 +21,8 @@
 	  font-family: Lucida Grande, Lucida Sans, Arial, Helvetica Neue, Verdana, Geneva, sans-serif;
 	  font-size: 11px; font-weight: normal; text-decoration: none;
 		  line-height: 1.5em;
+	  margin: 0;
+	  padding: 0;
 	}
 	a img { 
 		border: 0px solid transparent;
@@ -36,7 +38,8 @@
 	canvas { 
 		display: block; 
 		outline: 0px; 
-		margin-bottom: 1.5em; 
+		margin: 0;
+		padding: 0;
 	}
 /* 
 	#content { 
@@ -47,9 +50,9 @@
 		background-color: #3d3d3d;
 	}
  */
- 
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.11.1/jquery.min.js"></script>
  <script type="text/javascript">
- 
+
  function hideAddressBar()
 {
   if(!window.location.hash)
@@ -62,7 +65,7 @@
       setTimeout( function(){ window.scrollTo(0, 1); }, 50 );
   }
 }
- 
+
 window.addEventListener("load", function(){ if(!window.pageYOffset){ hideAddressBar(); } } );
 window.addEventListener("orientationchange", hideAddressBar );
  
@@ -77,8 +80,7 @@ window.addEventListener("orientationchange", hideAddressBar );
 	<body>
 		<div id="content">
 			<div>
-				<canvas id="@@id@@" data-processing-sources="@@sketch@@.pde" 
-						width="@@width@@" height="@@height@@">
+				<canvas id="@@id@@" data-processing-sources="@@sketch@@.pde">
 					<p>Your browser does not support the canvas tag.</p>
 					<!-- Note: you can put any alternative content here. -->
 				</canvas>

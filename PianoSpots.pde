@@ -20,26 +20,26 @@ ArrayList spotQueue = new ArrayList(); // All spots queued up at a given time
 // setup() -- handle setup.
 void setup() 
 {
-  size( 1024, 768 );
+  size(window.innerWidth, window.innerHeight);
   smooth();
-  
+
   soundBank = new ScaledSampleSoundBank( 
-                      new Maxim( this ), 
-                      "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
-                      ScaleFactory.createBluesMinor(), // Scale for generating tones
-                      -14, // Number of intervals below the root tone
-                      12, // Number of intervals above the root tone
-                      24, // Max number of tones (lower this if performance is a problem) 
-                      1.0, // Amplification
-                      15 // Sample file length
-                      );
+  new Maxim( this ), 
+  "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
+  ScaleFactory.createBluesMinor(), // Scale for generating tones
+  -14, // Number of intervals below the root tone
+  12, // Number of intervals above the root tone
+  24, // Max number of tones (lower this if performance is a problem) 
+  1.0, // Amplification
+  15 // Sample file length
+  );
 }
 
 // draw() -- handle drawing.
 void draw() 
 {
   background( 0 );
-  
+
   // Spots on the canvas.
   noStroke();
   for ( int i = spotQueue.size() - 1; i >= 0; i-- )
@@ -51,7 +51,7 @@ void draw()
       // Remove burned out spots from the queue.
       spotQueue.remove( i );
     }
-    
+
     spot = null;
   }
 }
@@ -82,3 +82,4 @@ void killAllSpots()
     spotQueue.remove( i );
   }
 }
+
