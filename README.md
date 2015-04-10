@@ -20,9 +20,12 @@ I started writing this as an assignment for the [Creative Programming for Digita
 
 If you're interested in playing around with the code, you can do the following:
 
-1. Start by vising http://processing.org/download and installing the appropriate version for your machine.
-2. Clone the PianoSpots repository to your machine.
-3. Open the PianoSpots.pde file in your Processing IDE.
+1. Go to http://processing.org/download and installing the appropriate version for your machine.
+2. Run the Processing IDE.
+3. Install the JavaScript mode. (On Mac OS X, click the Java mode button in the upper-right of the Processing window; click Add Mode...; then choose the JavaScript mode.) You may need to reboot to switch to this mode.
+4. Clone the PianoSpots repository to your machine.
+5. Open the PianoSpots.pde file in your Processing IDE.
+6. Press the "Play" button to start the web server and run the sketch. (You'll get a warning message in the IDE about the applet size, because it's dynamically determined by the browser window at runtime. Just click OK.)
 
 For more information, see the [Processing.js Quick Start](http://processingjs.org/articles/p5QuickStart.html) guide.
 
