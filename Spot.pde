@@ -32,8 +32,11 @@ float MAX_ALPHA = 100;  // Max alpha channel value (0 - 255)
 float ECHO_ALPHA_REDUCTION = 2.5; // Amount to reduce alpha for echoes
 float ECHO_VOLUME_REDUCTION = 0.0275; // Amount to reduce volume for echoes.
 
-public class Spot 
-{
+int MODE_INFINITE = 0;
+int MODE_CLASSIC = 1;
+int MODE = MODE_CLASSIC;
+
+public class Spot {
   // Spot properties
   private float x, y, w, h; // Position and canvas size
   private float diameter; // Size
@@ -44,8 +47,7 @@ public class Spot
   private float volume = 1.0; // Volume to play sound
 
   // Constructor
-  public Spot( float x, float y, Sound sound ) 
-  {
+  public Spot(float x, float y, Sound sound) {
     this.x = x;
     this.y = y;
     this.sound = sound;
@@ -68,9 +70,8 @@ public class Spot
   
   // echo() -- makes a copy of the spot at its original location, 
   // but reduces the alpha and volume a bit.
-  public Spot echo()
-  {
-    Spot spot = new Spot( x, y, sound );
+  public Spot echo() {
+    Spot spot = new Spot(x, y, sound);
     
     // Location, canvas and color properties are identical for echo and parent.
     spot.w = w;
@@ -82,49 +83,44 @@ public class Spot
     // Alpha and volume are reduced by a small amount from the parent.
     // Because alpha decays as the spot expands, use the initial alpha
     // for the parent as the starting point - not its current alpha.
-    spot.alpha = spot.initialAlpha = initialAlpha - ECHO_ALPHA_REDUCTION;
-    spot.volume = volume - ECHO_VOLUME_REDUCTION;
-    
-    // Technically it's not burned out until alpha == 0, but by the time
-    // the initial alpha is about 20 it's barely visible.
-    if ( spot.alpha <= 20 || spot.volume <= 0 )
-    {
-      spot.burnedOut = true;
+    if (MODE == MODE_CLASSIC) {
+      spot.alpha = spot.initialAlpha = initialAlpha - ECHO_ALPHA_REDUCTION;
+      spot.volume = volume - ECHO_VOLUME_REDUCTION;
+
+      // Technically it's not burned out until alpha == 0, but by the time
+      // the initial alpha is about 20 it's barely visible.
+      if (spot.alpha <= 20 || spot.volume <= 0) {
+        spot.burnedOut = true;
+      }
     }
     
     return spot;
   }
 
   // play() -- handles drawing the spot.
-  public void draw()
-  {
-    if ( !isBurnedOut() ) 
-    {
-      fill( red, green, blue, alpha );
-      ellipse( x, y, diameter, diameter );
+  public void draw() {
+    if (!isBurnedOut()) {
+      fill(red, green, blue, alpha);
+      ellipse(x, y, diameter, diameter);
 
       expand();
     }
   }
 
-  public boolean isBurnedOut()
-  {
+  public boolean isBurnedOut() {
     return burnedOut;
   }
 
-  public void playSound()
-  {
-    sound.play( volume );
+  public void playSound() {
+    sound.play(volume);
   }
   
   // expand() -- increases diameter and fades the alpha channel.
-  private void expand() 
-  {
+  private void expand() {
     // Alpha fade is calculated so it reaches 0 at the same time the diameter reaches its max.
-    alpha -= ( EXPAND_SPEED * initialAlpha ) / ( MAX_DIAMETER - MIN_DIAMETER ); 
+    alpha -= (EXPAND_SPEED * initialAlpha) / (MAX_DIAMETER - MIN_DIAMETER); 
     diameter += EXPAND_SPEED;
-    if ( diameter >= MAX_DIAMETER || alpha <= 0 ) 
-    {
+    if (diameter >= MAX_DIAMETER || alpha <= 0) {
       burnedOut = true;
     }
   }

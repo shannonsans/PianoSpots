@@ -262,7 +262,7 @@ public static class RationalScale implements Scale {
  
   public float[] getFrequencyFactors(int low, int high) {
     /* 
-     * [SHANNON HALE] Rewriting this section because it's doing something weird when 
+     * Rewriting this section because it's doing something weird when 
      * returning notes, such that it sometimes returns a note that was lower than 
      * the note before it.
      */
@@ -366,43 +366,37 @@ public static class ScaleFactory {
   public static Scale createPentatonicMinor() {
     return new RationalScale(new float[] {
       30, 36, 40, 45, 54
-    }
-    );
+    });
   }
  
   public static Scale createPentatonicMajor() {
     return new RationalScale(new float[] {
       24, 27, 30, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createEgyptianSuspended() {
     return new RationalScale(new float[] {
       24, 27, 32, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createBluesMinor() {
     return new RationalScale(new float[] {
       15, 18, 20, 24, 27
-    }
-    );
+    });
   }
  
   public static Scale createBluesMajor() {
     return new RationalScale(new float[] {
       24, 27, 32, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createPentatonicPythagorean() {
     return new RationalScale(new float[] {
       54, 64, 72, 81, 96
-    }
-    );
+    });
   }
  
   /*
@@ -412,8 +406,7 @@ public static class ScaleFactory {
   public static Scale createDiatonic() {
     return new RationalScale(new float[] {
       24, 27, 30, 32, 36, 40, 45
-    }
-    );
+    });
   }
  
   /*
@@ -483,8 +476,8 @@ public class ScaledSampleSoundBank implements SoundBank {
    * 
    * @author Shannon Hale
    */
-  public Sound getMappedSound() {
-    return sounds[int(map( mouseX, 0, width, 0, sounds.length - 1 ))];
+  public Sound getMappedSound(float x) {
+    return sounds[int(map( x, 0, width, 0, sounds.length - 1 ))];
   }
 }
  

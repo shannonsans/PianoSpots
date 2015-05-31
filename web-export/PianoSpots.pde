@@ -4,52 +4,78 @@
  * The spot and note echo repeatedly, decreasing slightly in opacity and volume
  * with each echo until they finally fade out.
  *
- * Because I'm not mathematically capable of generating the scales I wanted for this
- * sketch, I'm using the Player, Sound and Scale classes from a Creative Commons-
- * licensed sketch by Gregory Bush called Spark Chimes. Any code by Bush is
- * clearly attributed.
+ * Player, Sound and Scale classes from a Creative Commons-licensed sketch by 
+ * Gregory Bush called Spark Chimes. All code by Bush is clearly attributed.
  */
 
 /* Constants */
-int DEFAULT_ECHO_INTERVAL = 5000; // Time (in ms) to wait between echoes spots
+int ECHO_INTERVAL_DEFAULT = 5000; // Time (in ms) to wait between echoes spots
+
+int SCALE_PENTATONIC_MAJOR = 0;
+int SCALE_PENTATONIC_MINOR = 1;
+int SCALE_PENTATONIC_PYTHAGOREAN = 2;
+int SCALE_BLUES_MAJOR = 3;
+int SCALE_BLUES_MINOR = 4;
+int SCALE_EGYPTION_SUSPENDED = 5;
+int SCALE_DIATONIC = 6;
+int SCALE_CHROMATIC = 7;
+
+int TONE_SMOOTH = 0;
+int TONE_WISTFUL = 1;
+
+int MODE_MANUAL = 0;
+int MODE_AUTO = 1;
 
 /* Globals for this sketch */
 SoundBank soundBank; // Sound generation
 ArrayList spotQueue = new ArrayList(); // All spots queued up at a given time
+int scale = SCALE_BLUES_MINOR;
+int echoInterval = ECHO_INTERVAL_DEFAULT;
+int tone = TONE_WISTFUL;
+int mode = MODE_MANUAL;
 
 // setup() -- handle setup.
-void setup() 
-{
+void setup() {
   size(window.innerWidth, window.innerHeight);
   smooth();
 
   soundBank = new ScaledSampleSoundBank( 
-    new Maxim( this ), 
-    "c3.wav", // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
-    ScaleFactory.createBluesMinor(), // Scale for generating tones
+    new Maxim(this), 
+    generateTone(tone), // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
+    generateScale(scale), // Scale for generating tones
     -16, // Number of intervals below the root tone
     16, // Number of intervals above the root tone
     30, // Max number of tones (lower this if performance is a problem) 
     1.0, // Amplification
     15 // Sample file length
   );
+
+  if (mode == MODE_AUTO) {
+    generateSpots();
+  }
 }
 
-// draw() -- handle drawing.
-void draw() 
-{
-  background( 0 );
+void generateSpots() {
+  int delay = int(random(0, echoInterval * 2));
+  int x = int(random(0, window.innerWidth));
+  int y = int(random(0, window.innerHeight));
+  queueSpot(new Spot(x, y, soundBank.getMappedSound(x)));
+  setTimeout(generateSpots, delay);
+}
+
+// draw() -- handle drawing
+void draw() {
+  background(0);
 
   // Spots on the canvas.
   noStroke();
-  for ( int i = spotQueue.size() - 1; i >= 0; i-- )
-  {
-    Spot spot = (Spot) spotQueue.get( i );
+  for (int i = spotQueue.size() - 1; i >= 0; i--) {
+    Spot spot = (Spot) spotQueue.get(i);
     spot.draw();
-    if ( spot.isBurnedOut() )
+    if (spot.isBurnedOut())
     {
       // Remove burned out spots from the queue.
-      spotQueue.remove( i );
+      spotQueue.remove(i);
     }
 
     spot = null;
@@ -57,32 +83,73 @@ void draw()
 }
 
 // mousePressed() -- handle mousePressed event
-void mousePressed()
-{
+void mousePressed() {
   // Queue up a new spot with the maximum number of lives remaining at the mouse/finger location
-  queueSpot( new Spot( mouseX, mouseY, soundBank.getMappedSound() ) );
+  queueSpot(new Spot( mouseX, mouseY, soundBank.getMappedSound(mouseX)));
 }
 
-// queueSpot() -- recursive function to add a spot and queue up echo on a timed loop.
-void queueSpot( Spot spot )
-{
+// queueSpot() -- add a spot and queue up echo on a timed loop.
+void queueSpot(Spot spot) {
   // Add this spot to the spots in play -- unless it's burned out!
-  if ( !spot.isBurnedOut() )
-  {
-    spotQueue.add( spot );
+  if (!spot.isBurnedOut()) {
+    spotQueue.add(spot);
     spot.playSound();
-    setTimeout( queueSpot, DEFAULT_ECHO_INTERVAL, spot.echo() );
+    setTimeout(queueSpot, echoInterval, spot.echo());
   }
 }
 
-void killAllSpots()
-{
-  for ( int i = spotQueue.size() - 1; i >= 0; i-- )
-  {
-    spotQueue.remove( i );
+void killAllSpots() {
+  for (int i = spotQueue.size() - 1; i >= 0; i--) {
+    spotQueue.remove(i);
   }
 }
 
+Scale generateScale(int s) {
+  Scale scale = null;
+  switch(s) {
+    case SCALE_BLUES_MAJOR:
+      scale = ScaleFactory.createBluesMajor();
+      break;
+    case SCALE_BLUES_MINOR:
+      scale = ScaleFactory.createBluesMinor();
+      break;
+    case SCALE_DIATONIC:
+      scale = ScaleFactory.createDiatonic();
+      break;
+    case SCALE_EGYPTION_SUSPENDED:
+      scale = ScaleFactory.createEgyptianSuspended();
+      break;
+    case SCALE_PENTATONIC_MAJOR:
+      scale = ScaleFactory.createEgyptianSuspended();
+      break;
+    case SCALE_PENTATONIC_MINOR:
+      scale = ScaleFactory.createEgyptianSuspended();
+      break;
+    case SCALE_PENTATONIC_PYTHAGOREAN:
+      scale = ScaleFactory.createEgyptianSuspended();
+      break;
+    default:
+      scale = ScaleFactory.createBluesMinor();
+  }
+
+  return scale;
+}
+
+String generateTone(int t) {
+  String tone = null;
+  switch(t) {
+    case TONE_WISTFUL:
+      tone = "c3.wav"; // Sample file: C3 piano note from http://www.freesound.org/people/Meg/sounds/83122/
+      break;
+    case TONE_SMOOTH:
+      tone = "g.wav";
+      break;
+    default:
+      tone = "c3.wav";
+  }
+
+  return tone;
+}
 /******************************************************************************
  * Sound generation code from:
  * 
@@ -347,7 +414,7 @@ public static class RationalScale implements Scale {
  
   public float[] getFrequencyFactors(int low, int high) {
     /* 
-     * [SHANNON HALE] Rewriting this section because it's doing something weird when 
+     * Rewriting this section because it's doing something weird when 
      * returning notes, such that it sometimes returns a note that was lower than 
      * the note before it.
      */
@@ -451,43 +518,37 @@ public static class ScaleFactory {
   public static Scale createPentatonicMinor() {
     return new RationalScale(new float[] {
       30, 36, 40, 45, 54
-    }
-    );
+    });
   }
  
   public static Scale createPentatonicMajor() {
     return new RationalScale(new float[] {
       24, 27, 30, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createEgyptianSuspended() {
     return new RationalScale(new float[] {
       24, 27, 32, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createBluesMinor() {
     return new RationalScale(new float[] {
       15, 18, 20, 24, 27
-    }
-    );
+    });
   }
  
   public static Scale createBluesMajor() {
     return new RationalScale(new float[] {
       24, 27, 32, 36, 40
-    }
-    );
+    });
   }
  
   public static Scale createPentatonicPythagorean() {
     return new RationalScale(new float[] {
       54, 64, 72, 81, 96
-    }
-    );
+    });
   }
  
   /*
@@ -497,8 +558,7 @@ public static class ScaleFactory {
   public static Scale createDiatonic() {
     return new RationalScale(new float[] {
       24, 27, 30, 32, 36, 40, 45
-    }
-    );
+    });
   }
  
   /*
@@ -568,8 +628,8 @@ public class ScaledSampleSoundBank implements SoundBank {
    * 
    * @author Shannon Hale
    */
-  public Sound getMappedSound() {
-    return sounds[int(map( mouseX, 0, width, 0, sounds.length - 1 ))];
+  public Sound getMappedSound(float x) {
+    return sounds[int(map( x, 0, width, 0, sounds.length - 1 ))];
   }
 }
  
@@ -611,8 +671,11 @@ float MAX_ALPHA = 100;  // Max alpha channel value (0 - 255)
 float ECHO_ALPHA_REDUCTION = 2.5; // Amount to reduce alpha for echoes
 float ECHO_VOLUME_REDUCTION = 0.0275; // Amount to reduce volume for echoes.
 
-public class Spot 
-{
+int MODE_INFINITE = 0;
+int MODE_CLASSIC = 1;
+int MODE = MODE_CLASSIC;
+
+public class Spot {
   // Spot properties
   private float x, y, w, h; // Position and canvas size
   private float diameter; // Size
@@ -623,8 +686,7 @@ public class Spot
   private float volume = 1.0; // Volume to play sound
 
   // Constructor
-  public Spot( float x, float y, Sound sound ) 
-  {
+  public Spot(float x, float y, Sound sound) {
     this.x = x;
     this.y = y;
     this.sound = sound;
@@ -647,9 +709,8 @@ public class Spot
   
   // echo() -- makes a copy of the spot at its original location, 
   // but reduces the alpha and volume a bit.
-  public Spot echo()
-  {
-    Spot spot = new Spot( x, y, sound );
+  public Spot echo() {
+    Spot spot = new Spot(x, y, sound);
     
     // Location, canvas and color properties are identical for echo and parent.
     spot.w = w;
@@ -661,49 +722,44 @@ public class Spot
     // Alpha and volume are reduced by a small amount from the parent.
     // Because alpha decays as the spot expands, use the initial alpha
     // for the parent as the starting point - not its current alpha.
-    spot.alpha = spot.initialAlpha = initialAlpha - ECHO_ALPHA_REDUCTION;
-    spot.volume = volume - ECHO_VOLUME_REDUCTION;
-    
-    // Technically it's not burned out until alpha == 0, but by the time
-    // the initial alpha is about 20 it's barely visible.
-    if ( spot.alpha <= 20 || spot.volume <= 0 )
-    {
-      spot.burnedOut = true;
+    if (MODE == MODE_CLASSIC) {
+      spot.alpha = spot.initialAlpha = initialAlpha - ECHO_ALPHA_REDUCTION;
+      spot.volume = volume - ECHO_VOLUME_REDUCTION;
+
+      // Technically it's not burned out until alpha == 0, but by the time
+      // the initial alpha is about 20 it's barely visible.
+      if (spot.alpha <= 20 || spot.volume <= 0) {
+        spot.burnedOut = true;
+      }
     }
     
     return spot;
   }
 
   // play() -- handles drawing the spot.
-  public void draw()
-  {
-    if ( !isBurnedOut() ) 
-    {
-      fill( red, green, blue, alpha );
-      ellipse( x, y, diameter, diameter );
+  public void draw() {
+    if (!isBurnedOut()) {
+      fill(red, green, blue, alpha);
+      ellipse(x, y, diameter, diameter);
 
       expand();
     }
   }
 
-  public boolean isBurnedOut()
-  {
+  public boolean isBurnedOut() {
     return burnedOut;
   }
 
-  public void playSound()
-  {
-    sound.play( volume );
+  public void playSound() {
+    sound.play(volume);
   }
   
   // expand() -- increases diameter and fades the alpha channel.
-  private void expand() 
-  {
+  private void expand() {
     // Alpha fade is calculated so it reaches 0 at the same time the diameter reaches its max.
-    alpha -= ( EXPAND_SPEED * initialAlpha ) / ( MAX_DIAMETER - MIN_DIAMETER ); 
+    alpha -= (EXPAND_SPEED * initialAlpha) / (MAX_DIAMETER - MIN_DIAMETER); 
     diameter += EXPAND_SPEED;
-    if ( diameter >= MAX_DIAMETER || alpha <= 0 ) 
-    {
+    if (diameter >= MAX_DIAMETER || alpha <= 0) {
       burnedOut = true;
     }
   }
