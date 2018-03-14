@@ -2,7 +2,7 @@
 
 Piano Spots is a [Processing.js](http://processingjs.org) sketch influenced by Brian Eno's Bloom app. Clicking/tapping on the screen draws a spot with an accompanying piano note. The spot and note echo repeatedly, decreasing slightly in opacity and volume with each echo until they finally fade out.
 
-See a working demo at http://shannonsansserif.com/PianoSpots. (It requires a browser that supports WebAudioAPI properly -- see http://caniuse.com/audio-api for a list.) Click anywhere to begin. The notes are mapped to where you click, with octaves increasing from left to write in a minor Blues scale. The colors are also determined by where you click: red maps to the x-axis, blue to the y-axis, and green to the distance from the center of the screen.
+See a working demo at http://pianospots.com. (It requires a browser that supports WebAudioAPI properly -- see http://caniuse.com/audio-api for a list.) Click anywhere to begin. The notes are mapped to where you click, with octaves increasing from left to write in a minor Blues scale. The colors are also determined by where you click: red maps to the x-axis, blue to the y-axis, and green to the distance from the center of the screen.
 
 ## Attribution
 
